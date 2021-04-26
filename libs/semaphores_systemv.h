@@ -4,6 +4,7 @@
  * @brief Functions for working with shared semaphores - System V Semaphores (wait for zero)
  * @date 2020-05-06
  * @author F3lda
+ * @update 2021-04-26
  */
 #ifndef SEMAPHORES_SYSTEMV_H_
 #define SEMAPHORES_SYSTEMV_H_

@@ -4,6 +4,7 @@
  * @brief Functions for working with shared semaphores - System V Semaphores (wait for zero)
  * @date 2020-05-06
  * @author F3lda
+ * @update 2021-04-26
  */
 #include "semaphores_systemv.h"
 
@@ -11,7 +12,7 @@
 int SemaphoreCreate(key_t key, int value)
 {
 	errno = 0;
-	int SEMid = semget(key, 1, IPC_CREAT | IPC_EXCL | S_IRUSR | S_IWUSR);// key, number of semaphores in array, flags - IPC_CREAT = create new semaphore if doesn't exist; IPC_EXCL = fail if semaphore already exists; S_IRUSR | S_IWUSR = ask for permissions
+	int SEMid = semget(key, 1, IPC_CREAT | IPC_EXCL | S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);// key, number of semaphores in array, flags - IPC_CREAT = create new semaphore if doesn't exist; IPC_EXCL = fail if semaphore already exists; S_IRUSR | S_IWUSR = ask for permissions
 	if(SEMid >= 0){// semaphore succesfully created
 		// Init semaphore
 		union semun {
@@ -35,7 +36,7 @@ int SemaphoreCreate(key_t key, int value)
 
 int SemaphoreGetId(key_t key)
 {
-	return semget(key, 1, S_IRUSR | S_IWUSR);// key, number of semaphores in array, permissions
+	return semget(key, 1, IPC_CREAT | S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH | S_IWOTH);// key, number of semaphores in array, permissions
 }
 
 
@@ -56,6 +57,6 @@ int SemaphorePushOperation(int semaphoreId, int operation)
 	struct sembuf sem_buf;
 	sem_buf.sem_num = 0;// number of semaphore in the semaphore array [from 0]
 	sem_buf.sem_op = operation;// operation - 1: add 1 to semaphore value; -1: subtract 1 from semaphore value; 0: wait until semaphore value is zero 
-	sem_buf.sem_flg = 0;// flag - 0: wait until operation is done; IPC_NOWAIT: don't wait; SEM_UNDO - automatically undone when the process terminates
+	sem_buf.sem_flg = SEM_UNDO;// flag - 0: wait until operation is done; IPC_NOWAIT: don't wait; SEM_UNDO - automatically undo when the process terminates
     return semop(semaphoreId, &sem_buf, 1);// semaphore id, semaphore buffer, length of sem_buf array - RETURN: if successful returns 0, otherwise returns -1
 }
