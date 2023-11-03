@@ -172,4 +172,4 @@ int main(int argc, char *argv[])
 // ipcs -s               - list semaphores
 
 
-
+// ps -fu xjirgl01       - list all user processes

@@ -17,7 +17,7 @@ int ProcessCreate(int (processFunction)(pid_t, void*), void *userData, bool wait
 		//printf("main - new process created succesfully! [%d]\n", child_pid);
 		if(waitForChild){
 			int status;
-			while(wait(&status) != child_pid);// wait for current new process
+			waitpid(child_pid, &status, 0);// wait for current new process
 			//printf("main - child exit code: %d [%d]\n", WEXITSTATUS(status), child_pid);
 			return WEXITSTATUS(status);
 		}
@@ -36,6 +36,7 @@ void ProcessWaitForAllChildProcesses()
 {
 	int child_finished_pid, status;
 	while((child_finished_pid = wait(&status)) > 0);// wait for all child processes
+	// wait(&status) is equivalent to: waitpid(-1, &status, 0);
 }
 
 
