@@ -3,8 +3,6 @@
 #include <stdio.h>
 
 #include "../../src/processemem.h"
-//#include "../../src/processes.h"
-//#include "../../src/sharedmem.h"
 
 // POSIX Named SharedMemory
 

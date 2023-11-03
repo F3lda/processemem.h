@@ -1,3 +1,10 @@
+/**
+ * @file semaphores.c
+ * 
+ * @brief Functions for working with semaphores
+ * @date 2023-11-03
+ * @author F3lda
+ */
 #include "semaphores.h"
 
 
