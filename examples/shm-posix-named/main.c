@@ -1,57 +1,15 @@
-#define _GNU_SOURCE // for S_IRUSR | S_IWUSR and usleep()
+#define _GNU_SOURCE // for usleep()
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/wait.h>
-#include <unistd.h>
-#include <errno.h>
-#include <fcntl.h>
-#include <sys/mman.h>
 
-#include "../../src/processes.h"
+#include "../../src/processemem.h"
+
+// POSIX Named SharedMemory
 
 
 
 #define shmSIZE sizeof(int)
 #define shmKEY "/shmKey"
-
-
-
-void * shm_posix_named_create(const char *shm_name, size_t shm_size)
-{
-    int shmID = shm_open(shm_name, O_CREAT | O_EXCL | O_RDWR, S_IRUSR | S_IWUSR);
-    if (shmID == -1) {
-        return ((void *) -1);
-    }
-    if (ftruncate(shmID, shm_size) == -1) {
-        close(shmID);
-        shm_unlink(shmKEY);
-        return ((void *) -1);
-    }
-    void *shm = mmap(NULL, shm_size, PROT_READ | PROT_WRITE, MAP_SHARED, shmID, 0);
-    close(shmID);
-    return shm; // pointer or MAP_FAILED ((void *) -1)
-}
-
-void * shm_posix_named_open(const char *shm_name, size_t shm_size)
-{
-    int shmID = shm_open(shm_name, O_RDWR, S_IRUSR | S_IWUSR);
-    if (shmID == -1) {
-        return ((void *) -1);
-    }
-    void *shm = mmap(NULL, shm_size, PROT_READ | PROT_WRITE, MAP_SHARED, shmID, 0);
-    close(shmID);
-    return shm; // pointer or MAP_FAILED ((void *) -1)
-}
-
-int shm_posix_named_close(void * shm, size_t shm_size)
-{
-    return munmap(shm, shm_size); // 0 - OK, -1 - failure
-}
-
-int shm_posix_named_destroy(const char *shm_name)
-{
-    return shm_unlink(shmKEY); // 0 - OK, -1 - failure
-}
 
 
 

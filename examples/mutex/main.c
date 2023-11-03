@@ -1,4 +1,3 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -11,6 +10,7 @@
 
 pthread_t tid[2];
 pthread_mutex_t lock;
+
 
 
 void * thread(void *arg)

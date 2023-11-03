@@ -1,7 +1,7 @@
 CC     = gcc
 CFLAGS = -std=c99 -Wall# -Wextra -pedantic -Werror 
 INCLUDE= -lm -lrt -pthread
-SRC    = *.c ../../src/processes.c
+SRC    = *.c ../../src/*.c
 OBJ    = *.o
 BUILDS = $(SRC:.c=.o)
 EXEC   = shm
@@ -28,22 +28,18 @@ ifeq ($(OS),Windows_NT)
 #Windows stuff
 clean: clean_build
 	@-del /F /S /Q $(EXEC) 2>NUL || true
-	@-del /F /S /Q temp_file.txt 2>NUL || true
 
 clean_build:
 	@-del /F /S /Q $(OBJ) 2>NUL || true
-	@-del /F /S /Q $(EXEC).core 2>NUL || true
 
 else
 
 #Linux stuff
 clean: clean_build
 	@-rm -rf $(EXEC) 2>/dev/null || true
-	@-rm -rf temp_file.txt 2>/dev/null || true
 
 clean_build:
 	@-rm -rf $(OBJ) 2>/dev/null || true
-	@-rm -rf $(EXEC).core 2>/dev/null || true
 
 endif
 

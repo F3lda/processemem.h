@@ -1,47 +1,18 @@
 #define _GNU_SOURCE // for usleep()
 #include <stdlib.h>
 #include <stdio.h>
-#include <sys/wait.h>
-#include <sys/shm.h>
-#include <unistd.h>
-#include <errno.h>
 
-#include "../../src/processes.h"
+#include "../../src/processemem.h"
+//#include "../../src/processes.h"
+//#include "../../src/sharedmem.h"
+
+// POSIX Named SharedMemory
+
 
 
 #define shmSIZE sizeof(int)
 key_t KEY;
 
-
-
-
-void * shm_systemv_named_create(key_t shm_key, size_t shm_size)
-{
-    int shmID = shmget(shm_key, shm_size, IPC_CREAT | 0666);
-    if (shmID == -1) {
-        return ((void *) -1);
-    }
-    return shmat(shmID, NULL, 0); // pointer or ((void *) -1)
-}
-
-void * shm_systemv_named_open(key_t shm_key, size_t shm_size)
-{
-    return shm_systemv_named_create(shm_key, shm_size); // pointer or ((void *) -1)
-}
-
-int shm_systemv_named_close(void * shm)
-{
-    return shmdt(shm); // 0 - OK, -1 - failure
-}
-
-int shm_systemv_named_destroy(key_t shm_key, size_t shm_size)
-{    
-    int shmID = shmget(shm_key, shm_size, IPC_CREAT | 0666);
-    if (shmID == -1) {
-        return -1;
-    }
-    return shmctl(shmID, IPC_RMID, NULL); // 0 - OK, -1 - failure
-}
 
 
 int process1(int processID, void *data)
