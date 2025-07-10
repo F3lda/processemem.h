@@ -28,7 +28,7 @@ int process1(int processID, void *data)
     }
 
     shm_systemv_named_close(shm);
-	return 0;
+    return 0;
 }
 
 int process2(int processID, void *data)
@@ -46,7 +46,7 @@ int process2(int processID, void *data)
     }
 
     shm_systemv_named_close(shm);
-	return 0;
+    return 0;
 }
 
 int main()
@@ -69,7 +69,7 @@ int main()
 
     ProcessCreate(process1, NULL, false);
     ProcessCreate(process2, NULL, false);
-	ProcessWaitForAllChildProcesses();
+    ProcessWaitForAllChildProcesses();
 
 
     printf("END VALUE: %d\n", *shm);

@@ -29,7 +29,7 @@ int process1(int processID, void *data)
     sem_systemv_named_push_operation(semID, SEM_OP_UNLOCK);
 
     printf("A1: end\n");
-	return 0;
+    return 0;
 }
 
 int process2(int processID, void *data)
@@ -52,7 +52,7 @@ int process2(int processID, void *data)
 
 
     printf("B2: end\n");
-	return 0;
+    return 0;
 }
 
 int main()
@@ -74,7 +74,7 @@ int main()
 
     ProcessCreate(process1, NULL, false);
     ProcessCreate(process2, NULL, false);
-	ProcessWaitForAllChildProcesses();
+    ProcessWaitForAllChildProcesses();
 
 
     printf("SEM VALUE: %d\n", sem_systemv_named_get_value(semID));

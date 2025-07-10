@@ -10,45 +10,45 @@
 
 int ProcessCreate(int (processFunction)(pid_t, void*), void *userData, bool waitForChild)// true - returns child exit code or number < 0 for error; false - returns new process id or number < 0 for error
 {
-	pid_t child_pid;
-	child_pid = fork();// create new process
-	if(child_pid > 0)// new process created succesfully - [child_pid = new process id]
-	{
-		//printf("main - new process created succesfully! [%d]\n", child_pid);
-		if(waitForChild){
-			int status;
-			waitpid(child_pid, &status, 0);// wait for current new process
-			//printf("main - child exit code: %d [%d]\n", WEXITSTATUS(status), child_pid);
-			return WEXITSTATUS(status);
-		}
-		return child_pid;
-	}
-	else if(child_pid == 0)// new process is running - [child_pid = 0]
-	{
-		exit((processFunction)(getpid(), userData));
-	}
-	//printf("main - unable to create a new process! [%d]\n", child_pid);
-	return child_pid;// failure - unable to create a new process
+    pid_t child_pid;
+    child_pid = fork();// create new process
+    if(child_pid > 0)// new process created succesfully - [child_pid = new process id]
+    {
+        //printf("main - new process created succesfully! [%d]\n", child_pid);
+        if(waitForChild){
+            int status;
+            waitpid(child_pid, &status, 0);// wait for current new process
+            //printf("main - child exit code: %d [%d]\n", WEXITSTATUS(status), child_pid);
+            return WEXITSTATUS(status);
+        }
+        return child_pid;
+    }
+    else if(child_pid == 0)// new process is running - [child_pid = 0]
+    {
+        exit((processFunction)(getpid(), userData));
+    }
+    //printf("main - unable to create a new process! [%d]\n", child_pid);
+    return child_pid;// failure - unable to create a new process
 }
 
 
 void ProcessWaitForAllChildProcesses()
 {
-	int child_finished_pid, status;
-	while((child_finished_pid = wait(&status)) > 0);// wait for all child processes
-	// wait(&status) is equivalent to: waitpid(-1, &status, 0);
+    int child_finished_pid, status;
+    while((child_finished_pid = wait(&status)) > 0);// wait for all child processes
+    // wait(&status) is equivalent to: waitpid(-1, &status, 0);
 }
 
 
 int ProcessWaitForChildProcess(int processID)
 {
-	int status;
-	return waitpid(processID, &status, 0);
+    int status;
+    return waitpid(processID, &status, 0);
 }
 
 
 int ProcessCheckIfAnyChildProcessFinished()
 {
-	int status;
-	return waitpid(-1, &status, WNOHANG);// >0 - finished child pid; 0 - any state not changed; -1 - no child exists
+    int status;
+    return waitpid(-1, &status, WNOHANG);// >0 - finished child pid; 0 - any state not changed; -1 - no child exists
 }

@@ -20,7 +20,7 @@ int process1(int processID, void *data)
         printf("A: %d\n", *shm);
         usleep(500);
     }
-	return 0;
+    return 0;
 }
 
 int process2(int processID, void *data)
@@ -31,7 +31,7 @@ int process2(int processID, void *data)
         printf("B: %d\n", *shm);
         usleep(500);
     }
-	return 0;
+    return 0;
 }
 
 int main()
@@ -49,7 +49,7 @@ int main()
 
     ProcessCreate(process1, shm, false);
     ProcessCreate(process2, shm, false);
-	ProcessWaitForAllChildProcesses();
+    ProcessWaitForAllChildProcesses();
 
 
     printf("END VALUE: %d\n", *shm);

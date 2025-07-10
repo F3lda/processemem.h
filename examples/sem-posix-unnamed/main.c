@@ -22,7 +22,7 @@ int process1(int processID, void *data)
     sem_posix_unlock(sem);
 
     printf("A1: end\n");
-	return 0;
+    return 0;
 }
 
 int process2(int processID, void *data)
@@ -41,7 +41,7 @@ int process2(int processID, void *data)
     sem_posix_lock_or_wait(sem);
     
     printf("B2: end\n");
-	return 0;
+    return 0;
 }
 
 int main()
@@ -59,7 +59,7 @@ int main()
 
     ProcessCreate(process1, sem, false);
     ProcessCreate(process2, sem, false);
-	ProcessWaitForAllChildProcesses();
+    ProcessWaitForAllChildProcesses();
 
 
     printf("SEM VALUE: %d\n", sem_posix_get_value(sem));

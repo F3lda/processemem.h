@@ -50,7 +50,7 @@ sem_t * sem_posix_named_open(const char *sem_name)
 
 int sem_posix_named_close(sem_t *semaphore)
 {
-	return sem_close(semaphore);
+    return sem_close(semaphore);
 }
 
 int sem_posix_named_destroy(const char *sem_name)
@@ -65,7 +65,7 @@ int sem_posix_named_destroy(const char *sem_name)
 int sem_posix_get_value(sem_t *semaphore)
 {
     int value = 0;
-	if (sem_getvalue(semaphore, &value) == -1) {
+    if (sem_getvalue(semaphore, &value) == -1) {
         return -1;
     }
     return value;
@@ -73,12 +73,12 @@ int sem_posix_get_value(sem_t *semaphore)
 
 int sem_posix_lock_or_wait(sem_t *semaphore)
 {
-	return sem_wait(semaphore);
+    return sem_wait(semaphore);
 }
 
 int sem_posix_unlock(sem_t *semaphore)
 {
-	return sem_post(semaphore);
+    return sem_post(semaphore);
 }
 
 
@@ -117,14 +117,14 @@ int sem_systemv_named_destroy(key_t sem_key)
 
 int sem_systemv_named_get_value(int semID)// returns -1 on error
 {
-	return semctl(semID, 0, GETVAL, 0);// semaphore id, semaphore number in array [from 0], cmd, [ignored]
+    return semctl(semID, 0, GETVAL, 0);// semaphore id, semaphore number in array [from 0], cmd, [ignored]
 }
 
 int sem_systemv_named_push_operation(int semID, int operation)
 {
-	struct sembuf sem_buf;
-	sem_buf.sem_num = 0;// number of semaphore in the semaphore array [from 0]
-	sem_buf.sem_op = operation;// operation - 1: add 1 to semaphore value (unlock); -1: subtract 1 from semaphore value (lock or wait); 0: wait until semaphore value is zero 
-	sem_buf.sem_flg = 0;// flag - 0: wait until operation is done (semaphore is available); IPC_NOWAIT: don't wait; SEM_UNDO - automatically undo when the process terminates
+    struct sembuf sem_buf;
+    sem_buf.sem_num = 0;// number of semaphore in the semaphore array [from 0]
+    sem_buf.sem_op = operation;// operation - 1: add 1 to semaphore value (unlock); -1: subtract 1 from semaphore value (lock or wait); 0: wait until semaphore value is zero 
+    sem_buf.sem_flg = 0;// flag - 0: wait until operation is done (semaphore is available); IPC_NOWAIT: don't wait; SEM_UNDO - automatically undo when the process terminates
     return semop(semID, &sem_buf, 1);// semaphore id, semaphore buffer, length of sem_buf array - RETURN: if successful returns 0, otherwise returns -1
 }

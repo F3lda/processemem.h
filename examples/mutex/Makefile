@@ -1,2 +1,2 @@
 all:
-	gcc -pthread main.c -o mutex
+    gcc -pthread main.c -o mutex

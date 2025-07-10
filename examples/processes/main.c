@@ -14,7 +14,7 @@ int process1(int processID, void *data)
     printf("PROCESS 1 [%d] - STARTED\n", processID);
     sleep(3); // wait 3 seconds
     printf("PROCESS 1 [%d] - DONE\n", processID);
-	return 0;
+    return 0;
 }
 
 int process2(int processID, void *data)
@@ -28,7 +28,7 @@ int process2(int processID, void *data)
     printf("data_out: %d\n", data_out);
 
     printf("PROCESS 2 [%d] - DONE\n", processID);
-	return data_out;
+    return data_out;
 }
 
 int main()
@@ -37,8 +37,8 @@ int main()
     int data_in = 5;
     printf("PROCESS 1 returned: %d\n", ProcessCreate(process1, NULL, false));
     printf("PROCESS 2 returned: %d\n", ProcessCreate(process2, &data_in, true));
-	ProcessWaitForAllChildProcesses();
-	printf("main - DONE\n");
+    ProcessWaitForAllChildProcesses();
+    printf("main - DONE\n");
     
     return 0;
 }
